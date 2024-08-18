@@ -13,6 +13,9 @@ export class Userlogin {
   @Column("character varying", { name: "password", nullable: true, length: 30 })
   PASSWORD: string | null;
 
+  @Column("character varying", { name: "priority", nullable: true, length: 30 })
+  PRIORITY: string | null;
+
   @ManyToOne(() => UserInfo, (userinfo) => userinfo.USERLOGIN)
   @JoinColumn([{ name: "userid", referencedColumnName: "ID" }])
   USERID: UserInfo;

@@ -157,7 +157,8 @@ export class UserService {
                 LASTNAME:signUpDTO.LASTNAME,
                 AGE:signUpDTO.AGE,
                 CITY:signUpDTO.CITY,
-                GENDER:signUpDTO.GENDER
+                GENDER:signUpDTO.GENDER,
+
                };
     
                const userInfoResponse=await this.userInfoRepository.save(infoPayload as unknown);
@@ -165,7 +166,8 @@ export class UserService {
                 const loginPayload={
                     EMAIL:signUpDTO.EMAIL,
                     PASSWORD:signUpDTO.PASSWORD,
-                    USERID:newID
+                    USERID:newID,
+                    PRIORITY:signUpDTO.PRIORITY
                 };
                 const userLoginResponse=await this.userLoginRepository.save(loginPayload as unknown);
     
@@ -197,6 +199,7 @@ export class UserService {
           DESCRIPTION:cartDTO.DESCRIPTION,
           SKUCODE:cartDTO.SKUCODE,
           USERNAME:cartDTO.USERNAME,
+          TYPE:cartDTO.TYPE
         }
 
         const cartDataResponse=await this.cartDataRepository.save(payload as unknown);

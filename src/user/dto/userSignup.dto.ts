@@ -29,4 +29,8 @@ export class SignUpDTO {
     @IsString()
     @IsNotEmpty()
 	PASSWORD: string
+	
+	@IsString()
+    @IsNotEmpty()
+	PRIORITY: string
 }

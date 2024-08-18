@@ -23,6 +23,10 @@ export class CartDTO {
 	DESCRIPTION: string
 
 	@IsString()
+    @IsNotEmpty()
+	TYPE: string
+
+	@IsString()
     @IsOptional()
 	SKUCODE: string
 

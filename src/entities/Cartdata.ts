@@ -12,6 +12,9 @@ export class Cartdata {
   @Column("character varying", { name: "price", nullable: true, length: 20 })
   PRICE: string | null;
 
+  @Column("character varying", { name: "type", nullable: true, length: 100 })
+  TYPE: string | null;
+
   @Column("character varying", {
     name: "itemlink",
     nullable: true,

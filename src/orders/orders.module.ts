@@ -4,15 +4,18 @@ import { OrdersController } from './orders.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Order } from 'src/entities/order';
 import { OrderDetails } from 'src/entities/OrderDetail';
+import { DBSequenceService } from 'src/dbService.service';
+import { Cartdata } from 'src/entities/Cartdata';
 
 @Module({
   imports:[
     TypeOrmModule.forFeature([
       Order,
-      OrderDetails
+      OrderDetails,
+      Cartdata
     ])
   ],
   controllers: [OrdersController],
-  providers: [OrdersService],
+  providers: [OrdersService,DBSequenceService],
 })
 export class OrdersModule {}
