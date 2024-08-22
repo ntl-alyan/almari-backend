@@ -3,7 +3,7 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { Order } from 'src/entities/order';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from "typeorm";
+import { Repository,Not,In } from "typeorm";
 import { OrderDetails } from 'src/entities/OrderDetail';
 import { DBSequenceService } from 'src/dbService.service';
 import { Cartdata } from 'src/entities/Cartdata';
@@ -172,6 +172,111 @@ export class OrdersService {
           httpStatus: HttpStatus.NOT_FOUND,
           data: [],
         };
+      }
+    }
+    catch(error)
+    {
+      console.log(error)
+    }
+  }
+
+  async allPendingOrders()
+  {
+    try{
+      const orders = await this.orderRepository.find({
+        relations:['orderDetails'],
+        where:{
+          ORDER_STATUS:Not('RECEIVED')
+        }as unknown
+      });
+
+      if(orders.length>0)
+      {
+        return {
+          status: "SUCCESS",
+          message: "Order Found",
+          httpStatus: HttpStatus.OK,
+          data: orders,
+        };
+      }
+      else
+      {
+        return {
+          status: "FAILURE",
+          message: "No Orders Found",
+          httpStatus: HttpStatus.NOT_FOUND,
+          data: [],
+        };
+      }
+    }
+    catch(error)
+    {
+      console.log(error)
+    }
+  }
+
+  async updateOrder(updateOrderDto: UpdateOrderDto)
+  {
+    try{
+      const orderExists=await this.orderRepository.find({
+        where:{
+          ID:updateOrderDto.ORDER_ID
+        } as unknown
+      })
+
+      if(orderExists.length===0)
+        {
+          return {
+            status: "FAILURE",
+            message: "No Orders Found",
+            httpStatus: HttpStatus.NOT_FOUND,
+            data: [],
+          };
+        }
+      else
+      {
+        let updateOrder;
+        if(updateOrderDto.ORDER_STATUS==='RECEIVED')
+        {
+           updateOrder=await this.orderRepository.update({
+            ID:updateOrderDto.ORDER_ID,
+          }as unknown,
+          {
+            ORDER_STATUS:updateOrderDto.ORDER_STATUS,
+            PAYMENT_STATUS:'DONE'
+          }as unknown
+          );
+        }
+        else
+        {
+           updateOrder=await this.orderRepository.update({
+            ID:updateOrderDto.ORDER_ID,
+          }as unknown,
+          {
+            ORDER_STATUS:updateOrderDto.ORDER_STATUS
+          }as unknown
+          );
+        }
+       
+
+        if(updateOrder)
+        {
+          return {
+            status: "SUCCESS",
+            message: "Order Updated",
+            httpStatus: HttpStatus.OK,
+            data: [],
+          };
+        }
+        else
+        {
+          return {
+            status: "FAILURE",
+            message: "Order Failed To Updated",
+            httpStatus: HttpStatus.EXPECTATION_FAILED,
+            data: [],
+          };
+        }
       }
     }
     catch(error)

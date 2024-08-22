@@ -9,6 +9,8 @@ import { DBSequenceService } from 'src/dbService.service';
 import { CLIENT_RENEG_LIMIT } from 'tls';
 import { CartDTO } from './dto/addToCart.dto';
 import { Cartdata } from 'src/entities/Cartdata';
+import { OtpService } from 'src/otp/otp.service';
+import { CreateOtpDto } from 'src/otp/dto/create-otp.dto';
 
 @Injectable()
 export class UserService {
@@ -19,7 +21,8 @@ export class UserService {
         private userInfoRepository: Repository<typeof UserInfo>,
         @InjectRepository(Cartdata)
         private cartDataRepository: Repository<typeof Cartdata>,
-        private readonly dbSequenceService: DBSequenceService
+        private readonly dbSequenceService: DBSequenceService,
+        private readonly otpService: OtpService
       ) {}
 
       async findAllUsers() {
@@ -171,6 +174,17 @@ export class UserService {
                 };
                 const userLoginResponse=await this.userLoginRepository.save(loginPayload as unknown);
     
+
+                const payload  ={
+                  ID:0,
+                  USERID:signUpDTO.EMAIL,
+                  KEY:'EMAIL',
+                  DATETIME:new Date(),
+                  VALUE:''
+                }
+
+                const createOTP=await this.otpService.create(payload);
+                
                 response = {
                 status: "SUCCESS",
                 message: "User Found",

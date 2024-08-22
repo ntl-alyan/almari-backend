@@ -37,7 +37,6 @@ export class OtpService {
       );
     }
 
- 
     const newID =
                 await this.dbSequenceService.getTableSequence(
                 `otp_id_seq`

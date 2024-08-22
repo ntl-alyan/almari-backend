@@ -27,5 +27,15 @@ export class OrdersController {
   findOrderByID(@Param("id") id:number) {
     return this.ordersService.findOrderByID(id);
   }
+
+  @Get('allPendingOrders')
+  allPendingOrders() {
+    return this.ordersService.allPendingOrders();
+  }
+
+  @Post('/updateOrder')
+  updateOrder(@Body() updateOrderDto: UpdateOrderDto) {
+    return this.ordersService.updateOrder(updateOrderDto);
+  }
  
 }
